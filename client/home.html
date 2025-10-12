@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - Social Network</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Social Network</a>
+            <button id="logoutBtn" class="btn btn-outline-light ms-auto">Đăng xuất</button>
+        </div>
+    </nav>
+
+    <div class="container mt-5 text-center">
+        <h2>Chào mừng bạn quay lại 👋</h2>
+        <p class="lead mt-3">Xin chào, <span id="username" class="fw-bold text-primary"></span>!</p>
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Vui lòng đăng nhập trước!");
+            window.location.href = "./index.html";
+        } else {
+            fetch("http://localhost:5001/api/auth/me", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.user) {
+                        document.getElementById("username").innerText = data.user.username;
+                    } else {
+                        alert("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!");
+                        localStorage.removeItem("token");
+                        window.location.href = "./index.html";
+                    }
+                })
+                .catch(() => {
+                    alert("Lỗi khi xác thực người dùng!");
+                    window.location.href = "./index.html";
+                });
+        }
+
+        // Đăng xuất
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.removeItem("token");
+            alert("Đăng xuất thành công!");
+            window.location.href = "./index.html";
+        });
+    </script>
+
+</body>
+
+</html>
