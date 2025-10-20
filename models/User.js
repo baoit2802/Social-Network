@@ -1,7 +1,7 @@
+// models/User.js
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-        // 👤 Tên hiển thị
         username: {
             type: String,
             required: [true, "Tên người dùng là bắt buộc"],
@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
             trim: true,
         },
 
-        // 📧 Email đăng nhập
         email: {
             type: String,
             required: [true, "Email là bắt buộc"],
@@ -18,25 +17,32 @@ const userSchema = new mongoose.Schema({
             match: [/^\S+@\S+\.\S+$/, "Email không hợp lệ"],
         },
 
-        // 🔒 Mật khẩu (đã hash)
         password: {
             type: String,
             required: [true, "Mật khẩu là bắt buộc"],
             minlength: [6, "Mật khẩu phải có ít nhất 6 ký tự"],
         },
 
-        // 🖼 Ảnh đại diện
         avatar: {
             type: String,
-            default: "https://i.pravatar.cc/150?u=default", // ảnh ngẫu nhiên mặc định
+            default: "https://i.pravatar.cc/150?u=default",
         },
 
-        // 📝 Mô tả ngắn / tiểu sử
         bio: {
             type: String,
             default: "",
             maxlength: 200,
         },
+
+        friends: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        }, ],
+
+        friendRequests: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        }, ],
 
         // 🔁 Dùng cho chức năng reset mật khẩu
         resetToken: String,

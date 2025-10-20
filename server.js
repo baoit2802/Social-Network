@@ -7,6 +7,8 @@ import expressListEndpoints from "express-list-endpoints";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createDefaultUser } from "./config/seedUser.js";
+import userRoutes from "./routes/userRoutes.js";
+import friendRoutes from "./routes/friendRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -27,12 +29,15 @@ const __dirname = path.dirname(__filename);
 // Serve static (client)
 app.use(express.static(path.join(__dirname, "client")));
 
-//  Route API
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "index.html"));
 });
+
+app.use("/api/users", userRoutes);
+app.use("/api/friends", friendRoutes);
+
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

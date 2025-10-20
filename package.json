@@ -2,7 +2,6 @@
   "name": "social-network-api",
   "version": "1.0.0",
   "description": "Social Network API Server",
-  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

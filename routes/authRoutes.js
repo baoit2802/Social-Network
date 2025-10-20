@@ -9,6 +9,7 @@ import {
 } from "../controllers/authController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 
+
 const router = express.Router();
 
 // Đăng ký

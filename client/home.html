@@ -4,58 +4,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ - Social Network</title>
+    <title>Trang Chủ - Mạng Xã Hội</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">Social Network</a>
-            <button id="logoutBtn" class="btn btn-outline-light ms-auto">Đăng xuất</button>
-        </div>
-    </nav>
+<body>
 
-    <div class="container mt-5 text-center">
-        <h2>Chào mừng bạn quay lại 👋</h2>
-        <p class="lead mt-3">Xin chào, <span id="username" class="fw-bold text-primary"></span>!</p>
+    <!-- ✅ Navbar component -->
+    <div id="navbar"></div>
+
+    <!-- Nội dung chính -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar (Menu bên trái) -->
+            <div class="col-lg-3 col-md-4">
+                <div class="sidebar">
+                    <h5><i class="fas fa-circle text-success"></i> Bạn bè online</h5>
+                    <ul>
+                        <li><i class="fas fa-circle text-success"></i> Nguyễn Văn A</li>
+                        <li><i class="fas fa-circle text-success"></i> Trần Thị B</li>
+                        <li><i class="fas fa-circle text-success"></i> Lê Văn C</li>
+                        <li><i class="fas fa-circle text-success"></i> Phạm Thị D</li>
+                    </ul>
+                    <h5 class="mt-4"><i class="fas fa-comments"></i> Danh sách phòng chat</h5>
+                    <ul>
+                        <li><i class="fas fa-users"></i> Phòng gia đình</li>
+                        <li><i class="fas fa-users"></i> Nhóm bạn bè</li>
+                        <li><i class="fas fa-users"></i> Chat công việc</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Nội dung chính (Main Content) -->
+            <div class="col-lg-9 col-md-8">
+                <div class="main-content">
+                    <h2 class="mb-4"><i class="fas fa-home"></i> Trang Chủ</h2>
+                    <p>Chào mừng bạn đến với mạng xã hội hiện đại! Đây là nơi bạn có thể chia sẻ, kết nối và tương tác với bạn bè.</p>
+                    <p class="lead">Xin chào, <span id="username" class="fw-bold text-primary"></span>!</p>
+
+                    <!-- Form tạo bài viết mới -->
+                    <div class="card post-creation-card mb-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="user-avatar me-3">
+                                    <i class="fas fa-user-circle fa-2x text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <input type="text" class="form-control post-input" placeholder="Bạn đang nghĩ gì?" id="postContent">
+                                </div>
+                            </div>
+
+                            <!-- Preview media -->
+                            <div id="mediaPreview" class="mb-3" style="display: none;">
+                                <div class="position-relative">
+                                    <img id="previewImage" class="img-fluid rounded" style="max-height: 300px; width: 100%; object-fit: cover;">
+                                    <video id="previewVideo" class="img-fluid rounded" style="max-height: 300px; width: 100%; object-fit: cover;" controls style="display: none;"></video>
+                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2" onclick="removeMedia()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex">
+                                    <button type="button" class="btn btn-outline-primary btn-sm me-2" onclick="document.getElementById('mediaInput').click()">
+                                        <i class="fas fa-image"></i> Ảnh/Video
+                                    </button>
+                                    <button type="button" class="btn btn-outline-success btn-sm me-2">
+                                        <i class="fas fa-smile"></i> Cảm xúc
+                                    </button>
+                                    <button type="button" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-map-marker-alt"></i> Vị trí
+                                    </button>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="createPost()" id="postBtn" disabled>
+                                    <i class="fas fa-paper-plane"></i> Đăng
+                                </button>
+                            </div>
+
+                            <!-- Hidden file input -->
+                            <input type="file" id="mediaInput" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)">
+                        </div>
+                    </div>
+
+                    <!-- Bài đăng mẫu -->
+                    <div class="card post-card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user-circle"></i> Nguyễn Văn A</h5>
+                            <p class="card-text">Đây là một bài đăng mẫu. Hãy thích và bình luận!</p>
+                            <button class="btn btn-outline-primary btn-custom"><i class="fas fa-thumbs-up"></i> Thích</button>
+                            <button class="btn btn-outline-secondary btn-custom"><i class="fas fa-comment"></i> Bình luận</button>
+                        </div>
+                    </div>
+
+                    <div class="card post-card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user-circle"></i> Trần Thị B</h5>
+                            <p class="card-text">Ảnh đẹp từ chuyến đi gần đây. #DuLịch</p>
+                            <img src="https://via.placeholder.com/600x300?text=Ảnh+mẫu" class="img-fluid" alt="Ảnh mẫu">
+                            <div class="mt-3">
+                                <button class="btn btn-outline-primary btn-custom"><i class="fas fa-thumbs-up"></i> Thích</button>
+                                <button class="btn btn-outline-secondary btn-custom"><i class="fas fa-comment"></i> Bình luận</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card post-card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user-circle"></i> Lê Văn C</h5>
+                            <p class="card-text">Hôm nay thời tiết thật đẹp! Ai cùng đi dạo không? 😊</p>
+                            <button class="btn btn-outline-primary btn-custom"><i class="fas fa-thumbs-up"></i> Thích</button>
+                            <button class="btn btn-outline-secondary btn-custom"><i class="fas fa-comment"></i> Bình luận</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script>
-        const token = localStorage.getItem("token");
-        if (!token) {
-            alert("Vui lòng đăng nhập trước!");
-            window.location.href = "./index.html";
-        } else {
-            fetch("http://localhost:5001/api/auth/me", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.user) {
-                        document.getElementById("username").innerText = data.user.username;
-                    } else {
-                        alert("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!");
-                        localStorage.removeItem("token");
-                        window.location.href = "./index.html";
-                    }
-                })
-                .catch(() => {
-                    alert("Lỗi khi xác thực người dùng!");
-                    window.location.href = "./index.html";
-                });
-        }
+    <!-- ✅ Footer component -->
+    <div id="footer"></div>
 
-        // Đăng xuất
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            localStorage.removeItem("token");
-            alert("Đăng xuất thành công!");
-            window.location.href = "./index.html";
-        });
-    </script>
-
+    <script src="./js/include.js"></script>
+    <script src="./js/home.js"></script>
 </body>
 
 </html>

@@ -15,7 +15,6 @@ const createToken = (user) => {
     );
 };
 
-// 🟢 Đăng ký tài khoản
 export const registerUser = async(req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -39,7 +38,6 @@ export const registerUser = async(req, res) => {
     }
 };
 
-// 🟡 Đăng nhập
 export const loginUser = async(req, res) => {
     try {
         const { email, password } = req.body;
@@ -68,7 +66,6 @@ export const loginUser = async(req, res) => {
     }
 };
 
-// 🟠 Quên mật khẩu (tạo token & gửi email)
 export const forgotPassword = async(req, res) => {
     try {
         const { email } = req.body;
@@ -100,12 +97,11 @@ export const forgotPassword = async(req, res) => {
     }
 };
 
-// 🔵 Đặt lại mật khẩu
 export const resetPassword = async(req, res) => {
     try {
         const { newPassword } = req.body;
         const token = req.params.token; // Lấy token từ URL params
-        
+
         console.log("🔍 Reset Password Debug:");
         console.log("- Token from URL:", req.params.token);
         console.log("- Token from body:", req.body.token);
@@ -156,26 +152,25 @@ export const getUserInfo = async(req, res) => {
     }
 };
 
-// 🔍 Kiểm tra token reset password
 export const checkResetToken = async(req, res) => {
     try {
         const { token } = req.params;
-        
+
         console.log("🔍 Checking reset token:", token);
-        
+
         const user = await User.findOne({
             resetToken: token,
             resetTokenExpire: { $gt: Date.now() },
         });
 
         if (!user) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 message: "Token không hợp lệ hoặc đã hết hạn!",
-                valid: false 
+                valid: false
             });
         }
 
-        res.status(200).json({ 
+        res.status(200).json({
             message: "Token hợp lệ!",
             valid: true,
             email: user.email,
